@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Machines in Daily Life</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Machines and Their Role in Our Lives</h1>
+    <nav>
+      <button class="nav-btn" data-target="types">Types of Machines</button>
+      <button class="nav-btn" data-target="importance">Importance of Machines</button>
+      <button class="nav-btn" data-target="game">Mini Game</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="types" class="page">
+      <h2>Types of Machines</h2>
+      <p><strong>Steam-powered Machines:</strong> Used steam engines in trains and factories during the Industrial Revolution.</p>
+      <p><strong>Electrical Machines:</strong> Use electricity to run, like computers, blenders, and washing machines.</p>
+    </section>
+
+    <section id="importance" class="page hidden">
+      <h2>Importance in Daily Life</h2>
+      <ul>
+        <li><strong>At Home:</strong> Washing machines, microwaves, refrigerators.</li>
+        <li><strong>In Industry:</strong> Automated tools, conveyor belts, robotic arms.</li>
+        <li><strong>Transport:</strong> Electric cars, trains, elevators.</li>
+      </ul>
+    </section>
+
+<section id="game" class="page hidden">
+  <h2>Mini Game: Machine Clicker</h2>
+  <p>Click the gear to build machines! Unlock different types as you go.</p>
+
+  <div id="clicker-area" class="clicker-grid">
+
+    <!-- Left panel: Display built machines -->
+    <div id="machine-display" class="side-panel">
+      <h3>Built Machines</h3>
+      <div id="machine-drop-zone" class="drop-zone"></div>
+    </div>
+
+    <!-- Center panel: Clicker and score -->
+    <div class="center-panel">
+      <button id="click-button">
+        <span id="cog">⚙️</span>
+      </button>
+      <p>Parts Built: <span id="score">0</span></p>
+    </div>
+
+    <!-- Right panel: Upgrade shop -->
+    <div id="upgrades" class="side-panel">
+      <h3>Upgrades</h3>
+      <!-- Upgrade buttons will be inserted by JS -->
+    </div>
+
+  </div> <!-- End of clicker-area -->
+
+    </section>
+  </main>
+
+  <footer>
+    <p>LabGroup: 03 | Name: Your Name | AdminNo: YourAdminNo</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
