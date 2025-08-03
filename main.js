@@ -1,4 +1,11 @@
-// Page navigation
+// sound preloading
+const soundMenu = new Audio('audio/menu.wav');
+const soundUpgrade = new Audio('audio/powerUp.wav');
+const soundClick = new Audio('audio/hitHurt.wav');
+const soundWin = new Audio('audio/win.wav');
+const soundReset = new Audio('audio/reset.wav');
+
+// page navigation
 document.querySelectorAll('.nav-btn').forEach(button => {
   button.addEventListener('click', () => {
     const target = button.getAttribute('data-target');
@@ -9,11 +16,16 @@ document.querySelectorAll('.nav-btn').forEach(button => {
   });
 });
 
-// Simple clicker game
+// clicker logic starts
 let score = 0;
+let gameStarted = false;
+let gameWon = false;
+let startTime = 0;
+let timerInterval = null;
+const winButton = document.getElementById('win-button');
+const timerDisplay = document.getElementById('timer-display');
 const scoreDisplay = document.getElementById('score');
 const upgradesDiv = document.getElementById('upgrades');
-const machineDisplay = document.getElementById('machine-icons');
 const clickButton = document.getElementById('click-button');
 const cog = document.getElementById('cog');
 
@@ -27,32 +39,39 @@ document.querySelectorAll('.nav-btn').forEach(button => {
   });
 });
 
-// Handle clicker logic
+// clicker logic
 clickButton.addEventListener('click', () => {
+
+  if (!gameStarted) {
+    gameStarted = true;
+    startTime = Date.now();
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+
   score += partsPerClick;
   scoreDisplay.textContent = score;
 
-  // Spin only the cog
+  // spin cog
   cog.classList.add('spin');
   setTimeout(() => {
     cog.classList.remove('spin');
   }, 400);
 
-  updateUpgrades();
-  updateMachines();
+  updateUpgradePanel();
+  updateWinButton();
 });
 
 let partsPerClick = 1;
 let passiveRate = 0;
 
-// Upgrade definitions
+// upgrades !!
 const upgrades = [
   {
     name: '🔩 Bigger Wrench',
     id: 'wrench',
     baseCost: 10,
     owned: 0,
-    effect: '+1 part per click',
+    effect: 'Bigger wrench means better machines, surely. +1 part per click',
     apply: () => { partsPerClick++; }
   },
   {
@@ -60,7 +79,7 @@ const upgrades = [
     id: 'electric',
     baseCost: 25,
     owned: 0,
-    effect: '+0.5 parts/sec',
+    effect: 'Simple machine that makes parts automatically. +0.5 parts/sec',
     apply: () => { passiveRate += 0.5; }
   },
   {
@@ -68,7 +87,7 @@ const upgrades = [
     id: 'arm',
     baseCost: 100,
     owned: 0,
-    effect: '+2 parts/sec',
+    effect: 'Advanced machine that makes even more parts! +2 parts/sec',
     apply: () => { passiveRate += 2; }
   }
 ];
@@ -83,13 +102,13 @@ function updateUpgradePanel() {
     upgradeEl.innerHTML = `
       <p><strong>${upg.name}</strong> | Cost: ${cost} | Owned: ${upg.owned}<br/>
       ${upg.effect}</p>
-      <button data-id="${upg.id}">Buy</button>
+      <button data-id="${upg.id}" class="sound-upgrade">Buy</button>
     `;
 
     upgradesDiv.appendChild(upgradeEl);
   });
 
-  // Event delegation
+  // event delegation
   upgradesDiv.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-id');
@@ -110,36 +129,73 @@ function updateUpgradePanel() {
   });
 }
 
-function updateMachines() {
-  machineDisplay.innerHTML = '';
-  const numIcons = Math.floor(score / 10);
-  for (let i = 0; i < numIcons; i++) {
-    machineDisplay.innerHTML += '🛠️ ';
-  }
-}
-
 setInterval(() => {
   if (passiveRate > 0) {
     score += passiveRate;
     scoreDisplay.textContent = Math.floor(score);
-    updateMachines();
   }
 }, 1000);
 
 updateUpgradePanel();
 
+// built machines panel
 function dropMachineImage(type) {
   const dropZone = document.getElementById('machine-drop-zone');
   const img = document.createElement('img');
   img.className = 'drop-item';
 
-  // Set the image source based on upgrade type
   if (type === 'wrench') img.src = 'images/wrench.png';
   if (type === 'electric') img.src = 'images/machine.png';
   if (type === 'arm') img.src = 'images/robot.png';
 
-  // Random horizontal position within drop zone
+  // random drop position
   img.style.left = Math.floor(Math.random() * 60 + 10) + '%';
 
   dropZone.appendChild(img);
 }
+
+function updateTimer() {
+  if (gameStarted && !gameWon) {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    timerDisplay.textContent = `Time: ${elapsed}s`;
+  }
+}
+
+function updateWinButton() {
+  if (score >= 2000 && !gameWon) {
+    winButton.disabled = false;
+  }
+}
+
+winButton.addEventListener('click', () => {
+  if (score >= 2000 && !gameWon) {
+    gameWon = true;
+    clearInterval(timerInterval);
+    const finalTime = Math.floor((Date.now() - startTime) / 1000);
+    alert(`🎉 Congrats! You've beaten the game in ${finalTime} seconds.\n\nYou can keep playing or refresh the page to try for a better time.`);
+  }
+});
+
+// makes the sounds
+document.querySelectorAll('button').forEach(button => {
+  button.addEventListener('click', (e) => {
+    if (e.target.matches('.sound-menu')) {
+      soundMenu.currentTime = 0;
+      soundMenu.play();
+    } else if (e.target.matches('.sound-upgrade')) {
+      soundUpgrade.currentTime = 0;
+      soundUpgrade.play();
+    } else if (e.target.matches('.sound-click')) {
+      soundClick.currentTime = 0;
+      soundClick.play();
+    }
+    else if (e.target.matches('.sound-win')) {
+      soundWin.currentTime = 0;
+      soundWin.play();
+    }
+    else if (e.target.matches('.sound-reset')) {
+      soundReset.currentTime = 0;
+      soundReset.play();
+    }
+  });
+});

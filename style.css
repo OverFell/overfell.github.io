@@ -1,34 +1,22 @@
 * {
   box-sizing: border-box;
 }
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
+
+
+
 header {
   background-color: #333;
   color: white;
   padding: 1em;
   text-align: center;
 }
-nav {
-  margin-top: 1em;
-}
-.nav-btn {
-  margin: 0.5em;
-  padding: 0.5em 1em;
-  cursor: pointer;
-}
-main {
-  padding: 1em;
-}
-.page {
-  display: none;
-}
-.page:not(.hidden) {
-  display: block;
-}
+
 footer {
   background-color: #eee;
   text-align: center;
@@ -36,19 +24,51 @@ footer {
   position: sticky;
   bottom: 0;
 }
-#clicker-area {
-  margin-top: 1em;
-  text-align: center;
-}
 
 @media (max-width: 800px) {
   header, footer {
     font-size: 0.9em;
   }
+}
+
+
+
+nav {
+  margin-top: 1em;
+}
+
+.nav-btn {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+@media (max-width: 800px) {
   .nav-btn {
     display: block;
     margin: 0.3em auto;
   }
+}
+
+
+/* page content */
+main {
+  padding: 1em;
+}
+
+.page {
+  display: none;
+}
+
+.page:not(.hidden) {
+  display: block;
+}
+
+
+/* clicker game */
+#clicker-area {
+  margin-top: 1em;
+  text-align: center;
 }
 
 .clicker-grid {
@@ -59,20 +79,57 @@ footer {
   flex-wrap: wrap;
 }
 
+@media (max-width: 800px) {
+  .clicker-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 .side-panel {
   flex: 1;
   min-width: 120px;
   background-color: #f4f4f4;
   padding: 1em;
   border: 1px solid #ccc;
-  height: 320px;
-  overflow-y: auto;
+  height: auto;
   font-size: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 800px) {
+  .side-panel {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .center-panel {
   flex: 2;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#click-button {
+  font-size: 3em;
+  padding: 1em;
+  transition: transform 0.2s ease-in-out;
+}
+
+#cog.spin {
+  display: inline-block;
+  animation: spin 0.4s ease-in-out;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .upgrade {
@@ -87,35 +144,20 @@ footer {
   padding: 0.3em 0.5em;
 }
 
-#click-button {
-  font-size: 3em;
-  padding: 1em;
-  transition: transform 0.2s ease-in-out;
-}
-
-#cog.spin {
-  display: inline-block;
-  animation: spin 0.4s ease-in-out;
-}
-
-/* Responsive stacking */
-@media (max-width: 800px) {
-  .clicker-grid {
-    flex-direction: column;
-  }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .drop-zone {
   position: relative;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  height: 200px;
+  overflow: visible;
   background: #fafafa;
+  border: 1px dashed #bbb;
+  margin-top: 0.5em;
+}
+
+@media (max-width: 800px) {
+  .drop-zone {
+    height: 150px;
+  }
 }
 
 .drop-item {
@@ -128,4 +170,20 @@ footer {
 @keyframes fall {
   0% { top: -50px; opacity: 0; }
   100% { top: calc(100% - 40px); opacity: 1; }
+}
+
+#win-button {
+  margin-top: 1em;
+  padding: 0.5em 1em;
+  font-size: 1em;
+}
+
+#timer-display {
+  font-weight: bold;
+  margin-top: 0.5em;
+}
+
+.image-visual {
+  flex: 1;
+  min-width: 120px;
 }

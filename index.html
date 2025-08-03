@@ -11,17 +11,36 @@
   <header>
     <h1>Machines and Their Role in Our Lives</h1>
     <nav>
-      <button class="nav-btn" data-target="types">Types of Machines</button>
-      <button class="nav-btn" data-target="importance">Importance of Machines</button>
-      <button class="nav-btn" data-target="game">Mini Game</button>
+      <button class="nav-btn sound-menu" data-target="types">Types of Machines</button>
+      <button class="nav-btn sound-menu" data-target="importance">Importance of Machines</button>
+      <button class="nav-btn sound-menu" data-target="game">Mini Game</button>
     </nav>
   </header>
 
   <main>
     <section id="types" class="page">
       <h2>Types of Machines</h2>
-      <p><strong>Steam-powered Machines:</strong> Used steam engines in trains and factories during the Industrial Revolution.</p>
-      <p><strong>Electrical Machines:</strong> Use electricity to run, like computers, blenders, and washing machines.</p>
+
+      <h3>Simple Machines</h3>
+      <p>Simple machines are basic mechanical devices that help make work easier by changing the direction or magnitude of a force. These include the lever, pulley, wheel and axle, inclined plane, wedge, and screw.</p>
+      <div class="image-visual"> <img src="images/pulley.jpg" alt="Pulley"> <img src="images/wheelandaxle.jpg" alt="Wheel and Axle"> </div>
+      <p>Tools like wrenches, scissors, and hammers are modern examples that incorporate simple machine principles. For example, a wrench uses the wheel and axle concept to amplify rotational force.</p>
+      <p>These machines have been used since ancient times — think of Egyptian pyramids using ramps and levers!</p>
+      <div class="image-visual"> <img src="images/pyramidconstruction.jpg" alt="Pyramid Construction"> </div>
+      <p><em>Fun fact:</em> The six classical simple machines were first defined by Greek philosopher Archimedes over 2,000 years ago.</p>
+      
+      <h3>Steam-Powered Machines</h3>
+      <p>Steam engines played a major role in the Industrial Revolution. They convert heat energy from boiling water into mechanical energy.</p>
+      <p>The first practical steam engine was developed by Thomas Newcomen in the early 1700s, and later improved by James Watt. These engines powered trains, ships, and factory equipment.</p>
+      <p>Steam-powered machines allowed industries to grow rapidly and made long-distance transportation much faster.</p>
+      <p><em>Example:</em> Steam locomotives, paddle steamers, and early printing presses.</p>
+
+      <h3>Electrical Machines</h3>
+      <p>Electrical machines use electricity to generate motion, heat, light, or power. Unlike steam machines, they are cleaner, faster, and easier to control.</p>
+      <p>Common types include electric motors (which convert electrical energy to mechanical energy), generators, and transformers.</p>
+      <p>These machines power everything from household appliances to massive factory robots.</p>
+      <p><em>Example:</em> Electric fans, microwave ovens, conveyor belts, and electric cars.</p>
+
     </section>
 
     <section id="importance" class="page hidden">
@@ -35,37 +54,38 @@
 
 <section id="game" class="page hidden">
   <h2>Mini Game: Machine Clicker</h2>
-  <p>Click the gear to build machines! Unlock different types as you go.</p>
+  <p>Click the gear to build machines! Try and build the Mega Machine as fast as possible.</p>
 
   <div id="clicker-area" class="clicker-grid">
 
-    <!-- Left panel: Display built machines -->
+    <!-- machine panel -->
     <div id="machine-display" class="side-panel">
       <h3>Built Machines</h3>
       <div id="machine-drop-zone" class="drop-zone"></div>
     </div>
 
-    <!-- Center panel: Clicker and score -->
+    <!-- clicker button + score -->
     <div class="center-panel">
-      <button id="click-button">
+      <button id="click-button" class="sound-click">
         <span id="cog">⚙️</span>
       </button>
       <p>Parts Built: <span id="score">0</span></p>
+      <p><button id="win-button" disabled class="sound-win">🏆 Build Mega Machine (2000 parts)</button></p>
+      <p id="timer-display">Time: 0s</p>
     </div>
 
-    <!-- Right panel: Upgrade shop -->
+    <!-- upgrade panel -->
     <div id="upgrades" class="side-panel">
       <h3>Upgrades</h3>
-      <!-- Upgrade buttons will be inserted by JS -->
     </div>
 
-  </div> <!-- End of clicker-area -->
+  </div> <!-- clicker game end -->
 
     </section>
   </main>
 
   <footer>
-    <p>LabGroup: 03 | Name: Your Name | AdminNo: YourAdminNo</p>
+    <p>Lab: 02 | Name: Dylan Chan | AdminNo: 242837K</p>
   </footer>
 
   <script src="main.js"></script>
