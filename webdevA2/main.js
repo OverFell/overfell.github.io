@@ -211,7 +211,6 @@ resetButton.addEventListener('click', () => {
 
   // Clear upgrades and machines
   updateUpgradePanel();
-  updateMachines();
 
   // Stop the timer
   clearInterval(timerInterval);
