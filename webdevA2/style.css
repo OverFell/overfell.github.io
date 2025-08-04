@@ -196,3 +196,18 @@ main {
   justify-content: center;
   gap: 1em;
 }
+
+#reset-button {
+  float: right;
+  margin-bottom: 1em;
+  padding: 0.5em 1em;
+  font-size: 0.9em;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#reset-button:hover {
+  background-color: #e0e0e0;
+}

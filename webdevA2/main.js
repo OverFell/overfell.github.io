@@ -27,17 +27,8 @@ const timerDisplay = document.getElementById('timer-display');
 const scoreDisplay = document.getElementById('score');
 const upgradesDiv = document.getElementById('upgrades');
 const clickButton = document.getElementById('click-button');
+const resetButton = document.getElementById('reset-button');
 const cog = document.getElementById('cog');
-
-document.querySelectorAll('.nav-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const target = button.getAttribute('data-target');
-    document.querySelectorAll('.page').forEach(page => {
-      page.classList.add('hidden');
-    });
-    document.getElementById(target).classList.remove('hidden');
-  });
-});
 
 // clicker logic
 clickButton.addEventListener('click', () => {
@@ -51,14 +42,10 @@ clickButton.addEventListener('click', () => {
   score += partsPerClick;
   scoreDisplay.textContent = score;
 
-  // spin cog
-  //cog.classList.add('spin');
-  //setTimeout(() => {
-  //  cog.classList.remove('spin');
-  //}, 400);
-  cog.classList.remove('spin');     // remove it first
-  void cog.offsetWidth;             // force reflow
-  cog.classList.add('spin');        // re-add it to restart animation
+  // spin the cog
+  cog.classList.remove('spin');     
+  void cog.offsetWidth;             
+  cog.classList.add('spin');        
 
   updateUpgradePanel();
   updateWinButton();
@@ -153,6 +140,8 @@ function dropMachineImage(type) {
 
   // random drop position
   img.style.left = Math.floor(Math.random() * 60 + 10) + '%';
+  const scale = 0.8 + Math.random() * 0.8;
+  img.style.transform = `scale(${scale})`;
 
   dropZone.appendChild(img);
 }
@@ -201,4 +190,32 @@ document.addEventListener('click', (e) => {
     soundReset.currentTime = 0;
     soundReset.play();
   }
+});
+
+resetButton.addEventListener('click', () => {
+  // Reset score and upgrades
+  score = 0;
+  partsPerClick = 1;
+  passiveRate = 0;
+  gameStarted = false;
+  gameWon = false;
+
+  upgrades.forEach(upg => {
+    upg.owned = 0;
+  });
+
+  // Reset DOM elements
+  scoreDisplay.textContent = '0';
+  winButton.disabled = true;
+  timerDisplay.textContent = 'Time: 0s';
+
+  // Clear upgrades and machines
+  updateUpgradePanel();
+  updateMachines();
+
+  // Stop the timer
+  clearInterval(timerInterval);
+
+  // Remove dropped images
+  document.getElementById('machine-drop-zone').innerHTML = '';
 });
