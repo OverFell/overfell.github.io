@@ -183,7 +183,16 @@ main {
   margin-top: 0.5em;
 }
 
+.image-visual img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0.5em auto;
+}
+
 .image-visual {
-  flex: 1;
-  min-width: 120px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
 }

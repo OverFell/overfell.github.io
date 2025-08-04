@@ -52,10 +52,13 @@ clickButton.addEventListener('click', () => {
   scoreDisplay.textContent = score;
 
   // spin cog
-  cog.classList.add('spin');
-  setTimeout(() => {
-    cog.classList.remove('spin');
-  }, 400);
+  //cog.classList.add('spin');
+  //setTimeout(() => {
+  //  cog.classList.remove('spin');
+  //}, 400);
+  cog.classList.remove('spin');     // remove it first
+  void cog.offsetWidth;             // force reflow
+  cog.classList.add('spin');        // re-add it to restart animation
 
   updateUpgradePanel();
   updateWinButton();
@@ -177,25 +180,25 @@ winButton.addEventListener('click', () => {
 });
 
 // makes the sounds
-document.querySelectorAll('button').forEach(button => {
-  button.addEventListener('click', (e) => {
-    if (e.target.matches('.sound-menu')) {
-      soundMenu.currentTime = 0;
-      soundMenu.play();
-    } else if (e.target.matches('.sound-upgrade')) {
-      soundUpgrade.currentTime = 0;
-      soundUpgrade.play();
-    } else if (e.target.matches('.sound-click')) {
-      soundClick.currentTime = 0;
-      soundClick.play();
-    }
-    else if (e.target.matches('.sound-win')) {
-      soundWin.currentTime = 0;
-      soundWin.play();
-    }
-    else if (e.target.matches('.sound-reset')) {
-      soundReset.currentTime = 0;
-      soundReset.play();
-    }
-  });
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.sound-menu')) {
+    soundMenu.currentTime = 0;
+    soundMenu.play();
+  } 
+  else if (e.target.closest('.sound-upgrade')) {
+    soundUpgrade.currentTime = 0;
+    soundUpgrade.play();
+  } 
+  else if (e.target.closest('.sound-click')) {
+    soundClick.currentTime = 0;
+    soundClick.play();
+  }
+  else if (e.target.closest('.sound-win')) {
+    soundWin.currentTime = 0;
+    soundWin.play();
+  }
+  else if (e.target.closest('.sound-reset')) {
+    soundReset.currentTime = 0;
+    soundReset.play();
+  }
 });
