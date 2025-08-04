@@ -211,3 +211,9 @@ main {
 #reset-button:hover {
   background-color: #e0e0e0;
 }
+
+@media (max-width:800px){ /*at mobile size*/
+#qrCodeImg{display:none;} /*hide QR code */
+h1{background: lightgreen;}
+h1::after{content:"(mobile)";}/*append text 'mobile’ */
+}
