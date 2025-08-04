@@ -164,7 +164,7 @@ winButton.addEventListener('click', () => {
     gameWon = true;
     clearInterval(timerInterval);
     const finalTime = Math.floor((Date.now() - startTime) / 1000);
-    alert(`🎉 Congrats! You've beaten the game in ${finalTime} seconds.\n\nYou can keep playing or refresh the page to try for a better time.`);
+    alert(`🎉 Congrats! You've beaten the game in ${finalTime} seconds.\n\nYou can keep playing or hit the reset button to try for a better time.`);
   }
 });
 
