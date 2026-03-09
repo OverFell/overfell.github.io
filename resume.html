@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume — Dylan Chan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --muted: #6b6b65;
+      --line: #e2e0da;
+      --bg: #faf9f6;
+      --accent: #b5540a;
+      --white: #ffffff;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.65;
+      padding: 3rem 1.5rem 6rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 1rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 3rem;
+    }
+
+    .name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--ink);
+    }
+
+    .title {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 0.4rem;
+    }
+
+    .contact-inline {
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .contact-inline a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-inline a:hover { color: var(--accent); }
+
+    /* ── SECTIONS ── */
+    section { margin-bottom: 3rem; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── ABOUT ── */
+    .about p {
+      font-size: 1.05rem;
+      color: var(--ink);
+      max-width: 580px;
+      line-height: 1.8;
+    }
+
+    /* ── EXPERIENCE / EDUCATION ── */
+    .entries { display: flex; flex-direction: column; gap: 2rem; }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 0 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--line);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .entry:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .entry-meta {
+      padding-top: 0.15rem;
+    }
+
+    .entry-period {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .entry-org {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .entry-role {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .entry-desc {
+      font-size: 0.88rem;
+      color: #444440;
+      line-height: 1.75;
+    }
+
+    .entry-desc ul {
+      padding-left: 1rem;
+      margin-top: 0.4rem;
+    }
+
+    .entry-desc li { margin-bottom: 0.25rem; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-group-title {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .tag {
+      font-size: 0.78rem;
+      color: var(--ink);
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 0.2rem 0.55rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.4rem 1.5rem;
+      transition: box-shadow 0.25s, border-color 0.25s;
+    }
+
+    .project-card:hover {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      border-color: #ccc9c0;
+    }
+
+    .project-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 0.35rem;
+    }
+
+    .project-tech {
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-desc {
+      font-size: 0.85rem;
+      color: #555550;
+      line-height: 1.7;
+    }
+
+    .project-link {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .project-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .contact-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .contact-value {
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+
+    .contact-value a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .contact-value a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 560px) {
+      .entry { grid-template-columns: 1fr; gap: 0.3rem 0; }
+      header { grid-template-columns: 1fr; }
+      .contact-inline { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div>
+      <div class="name">Dylan Chan</div>
+      <div class="title">Student Game Developer</div>
+    </div>
+    <div class="contact-inline">
+      <div><a href="mailto:dylan@example.com">dylanchankhenghoi@gmail.com</a></div>
+      <div><a href="tel:+15550001234">+65 8723 4046</a></div>
+      <div><a href="https://www.linkedin.com/in/dylan-chan-a71b643a6/">https://www.linkedin.com/in/dylan-chan-a71b643a6/</a></div>
+      <div>Singapore</div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section class="about">
+    <div class="section-label">About</div>
+    <p>
+      Aspiring game developer with experience using Unity, C#, C++ and a bit of Unreal engine. Studying Game Development for 2.5 years so far at Nanyang Polytechnic.
+    </p>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section>
+    <div class="section-label">Experience</div>
+    <div class="entries">
+
+      <div class="entry">
+        <div class="entry-meta">
+          <div class="entry-period">Feb 2026 - Mar 2026</div>
+          <div class="entry-org">Nanyang Polytechnic</div>
+        </div>
+        <div>
+          <div class="entry-role">Programmer</div>
+          <div class="entry-desc">
+            <ul>
+              <li>Worked with a team of developers to design a Boss encounter for a 3rd person action game.</li>
+              <li>Mainly in charge of implementing minion state machines and AI behaviors.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-meta">
+          <div class="entry-period">2026 - Present</div>
+          <div class="entry-org">Nanyang Polytechnic</div>
+        </div>
+        <div>
+          <div class="entry-role">Programmer</div>
+          <div class="entry-desc">
+            <ul>
+              <li>Working with a small development team to create an indie game for a competition.</li>
+              <li>Implemented core gameplay mechanics such as various enemy AI and procedural dungeon generation.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section>
+    <div class="section-label">Education</div>
+    <div class="entries">
+
+      <div class="entry">
+        <div class="entry-meta">
+          <div class="entry-period">2024 — Present</div>
+          <div class="entry-org">Nanyang Polytechnic</div>
+        </div>
+        <div>
+          <div class="entry-role">Studying for a Diploma in Game Development and Technology</div>
+          <div class="entry-desc">
+            Learning various game development skills such as programming, level design and game design. Currently in my final year of study with expected graduation in mid 2027.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section>
+    <div class="section-label">Skills</div>
+    <div class="skills-grid">
+      <div>
+        <div class="skill-group-title">Programming</div>
+        <div class="skill-tags">
+          <span class="tag">C#</span>
+          <span class="tag">C++</span>
+          <span class="tag">Unity</span>
+          <span class="tag">Unreal Engine</span>
+        </div>
+      </div>
+      <div>
+        <div class="skill-group-title">Frontend</div>
+        <div class="skill-tags">
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+      </div>
+      <div>
+        <div class="skill-group-title">Backend</div>
+        <div class="skill-tags">
+          <span class="tag">Node.js</span>
+          <span class="tag">Python</span>
+          <span class="tag">MariaDB</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section>
+    <div class="section-label">Projects</div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-name">3D Game Project</div>
+        <div class="project-tech">Unity · C#</div>
+        <div class="project-desc">
+          Group project for a 3D action game with the theme of "Boss Battle".
+        </div>
+        <iframe
+          width="100%"
+          height="200"
+          src="https://www.youtube.com/embed/iuxumzl-Ubc"
+          frameborder="0"
+          allowfullscreen
+          style="border-radius: 4px; margin-top: 0.75rem;"
+        ></iframe>
+      </div>
+
+      <div class="project-card">
+        <div class="project-name">Mobile Game Programming</div>
+        <div class="project-tech">Java</div>
+        <div class="project-desc">
+          A mobile game development project using Java and the Android SDK.
+        </div>
+        <iframe
+          width="100%"
+          height="200"
+          src="https://www.youtube.com/embed/zuOw4yh9VZM"
+          frameborder="0"
+          allowfullscreen
+          style="border-radius: 4px; margin-top: 0.75rem;"
+        ></iframe>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section>
+    <div class="section-label">Contact</div>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <span class="contact-value"><a href="mailto:dylanchankhenghoi@gmail.com">dylanchankhenghoi@gmail.com</a></span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Phone</span>
+        <span class="contact-value">+65 8723 4046</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value"><a href="https://www.linkedin.com/in/dylan-chan-a71b643a6/">linkedin.com/in/dylan-chan-a71b643a6/</a></span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Portfolio</span>
+        <span class="contact-value"><a href="#">dylanchankhenghoi.github.io</a></span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Location</span>
+        <span class="contact-value">Singapore</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
