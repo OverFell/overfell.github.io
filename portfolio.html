@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio — Game Dev</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0c10;
+      --surface: #111318;
+      --border: #1e2028;
+      --text: #d4d8e8;
+      --muted: #5a5f75;
+      --neon: #00e5a0;
+      --neon-dim: rgba(0,229,160,0.08);
+      --neon-glow: rgba(0,229,160,0.35);
+      --accent2: #e0553a;
+      --mono: 'Space Mono', monospace;
+      --display: 'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--neon);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, opacity 0.2s;
+      transform: translate(-50%, -50%);
+    }
+
+    .cursor-ring {
+      width: 32px; height: 32px;
+      border: 1px solid var(--neon);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.35s ease, opacity 0.2s;
+      transform: translate(-50%, -50%);
+      opacity: 0.5;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(11,12,16,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--neon);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--text); }
+
+    .nav-links { display: flex; gap: 2rem; }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 1px;
+      background: var(--neon);
+      transform: scaleX(0);
+      transition: transform 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--neon); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* SECTIONS */
+    section { position: relative; z-index: 1; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 3rem;
+      padding-top: 80px;
+    }
+
+    .hero-inner { max-width: 900px; }
+
+    .hero-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s ease forwards;
+    }
+
+    .hero-tag::before { content: '// '; }
+
+    .hero-name {
+      font-family: var(--display);
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.25s ease forwards;
+    }
+
+    .hero-name .line2 {
+      -webkit-text-stroke: 1px var(--muted);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.4s ease forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.55s ease forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s;
+      cursor: none;
+    }
+
+    .btn-primary {
+      background: var(--neon);
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 24px var(--neon-glow);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--neon);
+      color: var(--neon);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 3rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-scroll::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--muted);
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 3rem;
+    }
+
+    /* SECTION HEADER */
+    .sec-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .sec-num {
+      font-size: 0.65rem;
+      color: var(--neon);
+      letter-spacing: 0.1em;
+    }
+
+    .sec-title {
+      font-family: var(--display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .sec-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ABOUT */
+    #about { padding: 8rem 0; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1rem;
+      font-size: 0.88rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 700; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .stat:hover { background: var(--neon-dim); }
+
+    .stat-num {
+      font-family: var(--display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--neon);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* PROJECTS */
+    #projects { padding: 6rem 0; }
+
+    .projects-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+
+    .project-item {
+      background: var(--surface);
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem 2rem;
+      transition: background 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: none;
+    }
+
+    .project-item:hover { background: var(--neon-dim); }
+
+    .project-item:hover .project-arrow { transform: translateX(4px); color: var(--neon); }
+
+    .project-index {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    .project-body { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .project-title {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .project-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+    .ptag {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 2px;
+    }
+
+    .project-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    .project-arrow {
+      font-size: 1.2rem;
+      color: var(--border);
+      transition: all 0.2s;
+    }
+
+    /* SKILLS */
+    #skills { padding: 6rem 0; }
+
+    .skills-outer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .skill-col {
+      background: var(--surface);
+      padding: 2rem;
+    }
+
+    .skill-col-title {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .skill-name {
+      font-size: 0.82rem;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .skill-name span { color: var(--muted); font-size: 0.7rem; }
+
+    .skill-bar-bg {
+      height: 2px;
+      background: var(--border);
+      width: 100%;
+    }
+
+    .skill-bar {
+      height: 2px;
+      background: var(--neon);
+      box-shadow: 0 0 6px var(--neon-glow);
+      transition: width 1s ease;
+    }
+
+    /* CONTACT */
+    #contact { padding: 6rem 0 10rem; }
+
+    .contact-wrap {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .contact-headline {
+      font-family: var(--display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .contact-headline .hl { color: var(--neon); }
+
+    .contact-body {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-link:hover { color: var(--neon); }
+
+    .contact-link-icon {
+      width: 32px; height: 32px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .contact-link:hover .contact-link-icon { border-color: var(--neon); }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .form-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .form-input, .form-textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .form-input:focus, .form-textarea:focus { border-color: var(--neon); }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { padding: 0 1.5rem; padding-top: 80px; }
+      .container { padding: 0 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .skills-outer { grid-template-columns: 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; padding: 1.5rem; }
+      .project-item { grid-template-columns: 40px 1fr; }
+      .project-arrow { display: none; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">dylan<span>.portfolio</span></a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">Game Dev Student</div>
+      <h1 class="hero-name">
+        Dylan<br>
+        <span class="line2">Chan</span>
+      </h1>
+      <p class="hero-sub">
+        Focused on gameplay systems, interactive experience design, and real-time application development. Currently pursuing a diploma in Game Development and Technology at Nanyang Polytechnic.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll to explore</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="sec-header reveal">
+        <span class="sec-num">01</span>
+        <h2 class="sec-title">About</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>
+            <strong>Game development student</strong> currently studying at Nanyang Polytechnic. I've been interested making games since I was a kid and decided to turn that passion into a career.
+          </p>
+          <p>
+            I specialize in <strong>gameplay programming</strong> and enjoy working across the full stack of game development — from engine-level systems to UI and player experience.
+          </p>
+        </div>
+        <div class="about-stats reveal">
+          <div class="stat">
+            <div class="stat-num">3+</div>
+            <div class="stat-label">Projects Completed</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Game Jams</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">4</div>
+            <div class="stat-label">Languages</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">2027</div>
+            <div class="stat-label">Expected Graduation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <div class="sec-header reveal">
+        <span class="sec-num">02</span>
+        <h2 class="sec-title">Projects</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="projects-list reveal">
+
+        <a href="https://overfell.github.io/webdevA2/" class="project-item">
+          <div class="project-index">01</div>
+          <div class="project-body">
+            <div class="project-title">Web Development</div>
+            <div class="project-meta">
+              <div class="project-tags">
+                <span class="ptag">HTML</span>
+                <span class="ptag">CSS</span>
+                <span class="ptag">JavaScript</span>
+              </div>
+            </div>
+            <div class="project-desc">A simple website built with HTML, CSS, and JavaScript.</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </a>
+
+        <a href="https://youtu.be/zuOw4yh9VZM" class="project-item">
+          <div class="project-index">02</div>
+          <div class="project-body">
+            <div class="project-title">Mobile Game Project</div>
+            <div class="project-meta">
+              <div class="project-tags">
+                <span class="ptag">Java</span>
+                <span class="ptag">Android SDK</span>
+                <span class="ptag">Mobile</span>
+              </div>
+            </div>
+            <div class="project-desc">A mobile game development project using Java and the Android SDK.</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </a>
+
+        <a href="https://youtu.be/iuxumzl-Ubc" class="project-item">
+          <div class="project-index">03</div>
+          <div class="project-body">
+            <div class="project-title">3D Game Project</div>
+            <div class="project-meta">
+              <div class="project-tags">
+                <span class="ptag">Unity</span>
+                <span class="ptag">C#</span>
+                <span class="ptag">1 Week</span>
+              </div>
+            </div>
+            <div class="project-desc">A small boss battle made in Unity within a week, with a team of 4.</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </a>
+
+        <a href="https://youtu.be/4ij8Buq3iUY" class="project-item">
+          <div class="project-index">04</div>
+          <div class="project-body">
+            <div class="project-title">2D Platformer</div>
+            <div class="project-meta">
+              <div class="project-tags">
+                <span class="ptag">OpenGL</span>
+                <span class="ptag">C++</span>
+                <span class="ptag">2D</span>
+              </div>
+            </div>
+            <div class="project-desc">A 2D platformer framework built with OpenGL and C++.</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container">
+      <div class="sec-header reveal">
+        <span class="sec-num">03</span>
+        <h2 class="sec-title">Skills</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="skills-outer reveal">
+        <div class="skill-col">
+          <div class="skill-col-title">Languages</div>
+          <div class="skill-item">
+            <div class="skill-name">C++ <span>Comfortable</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:75%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">C# <span>Comfortable</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:70%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Java <span>Learning</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:40%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Python <span>Learning</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:45%"></div></div>
+          </div>
+        </div>
+        <div class="skill-col">
+          <div class="skill-col-title">Engines & Tools</div>
+          <div class="skill-item">
+            <div class="skill-name">Unity <span>Primary</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:80%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Unreal Engine <span>Basics</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:30%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Git <span>Daily</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:70%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Android Studio <span>Learning</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:50%"></div></div>
+          </div>
+        </div>
+        <div class="skill-col">
+          <div class="skill-col-title">Concepts</div>
+          <div class="skill-item">
+            <div class="skill-name">Game Architecture <span>Strong</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:65%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Physics Systems <span>Confident</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:55%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">AI / Pathfinding <span>Confident</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:55%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-name">Shaders / VFX <span>Learning</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" style="width:50%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="sec-header reveal">
+        <span class="sec-num">04</span>
+        <h2 class="sec-title">Contact</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="contact-wrap reveal">
+        <div>
+          <div class="contact-headline">Contact <span class="hl">info.</span></div>
+          <p class="contact-body">
+            Open to internships and collaborations.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:dylanchankhenghoi@gmail.com" class="contact-link">
+              <div class="contact-link-icon">✉</div>
+              dylanchankhenghoi@gmail.com
+            </a>
+            <a href="https://linkedin.com/in/dylan-chan-a71b643a6/" class="contact-link">
+              <div class="contact-link-icon">in</div>
+              linkedin.com/in/dylan-chan-a71b643a6/
+            </a>
+            <a href="https://github.com/overfell" class="contact-link">
+              <div class="contact-link-icon">gh</div>
+              github.com/overfell
+            </a>
+            <a href="https://overfell.itch.io/" class="contact-link">
+              <div class="contact-link-icon">it</div>
+              overfell.itch.io
+            </a>
+          </div>
+        </div>
+        <!-- <div class="contact-form">
+          <div class="form-field">
+            <label class="form-label">Name</label>
+            <input class="form-input" type="text" placeholder="Your name"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="your@email.com"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" rows="5" placeholder="What's on your mind?"></textarea>
+          </div>
+          <button class="btn btn-primary" style="align-self:flex-start; border:none; cursor:none;">Send Message →</button>
+        </div> -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 Dylan Chan. Built with HTML/CSS.</span>
+    <span style="color:var(--neon)">// currently available for opportunities</span>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+
+    (function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
